@@ -13,7 +13,7 @@ MASTERIES_URL = 'http://ddragon.leagueoflegends.com/cdn/{}/img/mastery/{}' #vers
 RUNES_URL = 'http://ddragon.leagueoflegends.com/cdn/{}/img/rune/{}' #version_id
 
 BASE_URL ="https://euw1.api.riotgames.com/lol/"
-key_file = os.path.join(os.path.dirname(__file__), "api-key")
+
 
 def get_response(url):
     """
