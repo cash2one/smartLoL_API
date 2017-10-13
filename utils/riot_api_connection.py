@@ -13,7 +13,7 @@ MASTERIES_URL = 'http://ddragon.leagueoflegends.com/cdn/{}/img/mastery/{}' #vers
 RUNES_URL = 'http://ddragon.leagueoflegends.com/cdn/{}/img/rune/{}' #version_id
 
 BASE_URL ="https://euw1.api.riotgames.com/lol/"
-
+key_file = os.path.join(os.path.dirname(__file__), "api-key")
 
 def get_response(url):
     """
@@ -26,7 +26,8 @@ def get_response(url):
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
     }
     """
-    key = open(os.path.abspath("/home/espino/Documentos/smartLOL/server/api-key")).readline()[:-1]
+    key_file = os.path.join(os.path.dirname(__file__), "api-key")
+    key = open(key_file).readline()[:-1]
     headers = {"X-Riot-Token": key}
 
     data = requests.get(url, headers=headers)
