@@ -1,0 +1,6 @@
+# Untracked files:
+utils/*
+!utils/riot_api_connection.py
+api-key
+*.txt
+.idea/
