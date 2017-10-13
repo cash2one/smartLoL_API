@@ -1,7 +1,6 @@
 from utils.riot_api_connection import get_response
 from database.setup import session
 from database.models import Configuration, Champions, ChampionEnemyTips, ChampionAllyTips, ChampionsInfo, ChampionsSkins, ChampionsSpells, ChampionsTitles, PassivesTranslations, SpellsTranslations, SkinsTranslations
-
 import json
 
 LOCALES = {

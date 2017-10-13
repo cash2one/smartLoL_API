@@ -1,4 +1,5 @@
 # Untracked files:
+database/*.config
 utils/*
 !utils/riot_api_connection.py
 !utils/load_*
