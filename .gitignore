@@ -1,6 +1,10 @@
 # Untracked files:
 utils/*
 !utils/riot_api_connection.py
+!utils/load_*
 api-key
 *.txt
 .idea/
+__pycache__*
+database/__pycache__*
+utils/__pycache__*

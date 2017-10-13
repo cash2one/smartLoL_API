@@ -26,7 +26,7 @@ def get_response(url):
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
     }
     """
-    key = open(os.path.abspath("api-key")).readline()[:-1]
+    key = open(os.path.abspath("/home/espino/Documentos/smartLOL/server/api-key")).readline()[:-1]
     headers = {"X-Riot-Token": key}
 
     data = requests.get(url, headers=headers)
