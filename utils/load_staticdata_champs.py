@@ -182,4 +182,5 @@ def get_champion_enemytips(champion, language):
 
 
 if __name__ == '__main__':
-    pass
+    write_files()
+    main()
