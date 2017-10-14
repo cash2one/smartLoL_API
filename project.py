@@ -1,10 +1,13 @@
 from flask import Flask, jsonify, abort
 from database.setup import session
+from database.models import Configuration
 import summoner, match, champion
 from requests import HTTPError
 
 
 app = Flask(__name__)
+
+VERSION = session.query(Configuration).filter_by(code="champion version").one().value
 
 
 @app.route('/smartLoL/summoner/<summoner_name>')

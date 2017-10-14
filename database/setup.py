@@ -2,9 +2,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 import json
 import os.path
-
-
 from sqlalchemy.orm import sessionmaker, scoped_session
+
 
 DB_URI = "mysql+mysqlconnector://{user}:{password}@{host}:{port}/{db}"
 config_file = os.path.join(os.path.dirname(__file__), "db.config")

@@ -1,6 +1,7 @@
 from utils.riot_api_connection import get_response, BASE_URL, PROFILE_ICONS_URL, CHAMPIONS_SPLASH_URL
-from database.setup import session, version
+from database.setup import session
 from database.models import Champions
+from project import VERSION
 
 
 def get_summoner_info(summoner_name):
@@ -24,7 +25,7 @@ def get_summoner_info(summoner_name):
         'accountId': summoner_info['accountId'],
         'name': summoner_info['name'],
         'lvl': summoner_info['summonerLevel'],
-        'icon': PROFILE_ICONS_URL.format(version, summoner_info['profileIconId'])
+        'icon': PROFILE_ICONS_URL.format(VERSION, summoner_info['profileIconId'])
     }
 
     return data
