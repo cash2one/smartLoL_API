@@ -7,8 +7,6 @@ from requests import HTTPError
 
 app = Flask(__name__)
 
-VERSION = session.query(Configuration).filter_by(code="champion version").one().value
-
 
 @app.route('/smartLoL/summoner/<summoner_name>')
 def get_summoner(summoner_name):
@@ -67,6 +65,24 @@ def get_champion_info(champion_id):
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     session.remove()
+
+
+def get_champion_version():
+    version = session.query(Configuration).filter_by(code="champion version").one()
+    return version.value
+
+def get_mastery_version():
+    version = session.query(Configuration).filter_by(code="mastery version").one()
+    return version.value
+
+def get_runes_version():
+    version = session.query(Configuration).filter_by(code="rune version").one()
+    return version.value
+
+def get_summoner_version():
+    version = session.query(Configuration).filter_by(code="summoner version").one()
+    return version.value
+
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
