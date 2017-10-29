@@ -1,7 +1,8 @@
-from flask import Flask, jsonify, abort
+from flask import Flask, jsonify, abort, request
 from database.setup import session
 from database.models import Configuration
-import summoner, match, champion
+#from summoner import SummonerRequest
+import match, champion, summoner
 from requests import HTTPError
 
 
@@ -11,9 +12,10 @@ app = Flask(__name__)
 @app.route('/smartLoL/summoner/<summoner_name>')
 def get_summoner(summoner_name):
     try:
-        summoner_data = summoner.get_summoner_info(summoner_name)
-        summoner_data['leagues'] = summoner.get_summoner_league(summoner_data['id'])
-        summoner_data['top_champions'] = summoner.get_summoner_top_champions(summoner_data['id'])
+        summoner_request = summoner.SummonerRequest(request.args['platform'], request.args['language'])
+        summoner_data = summoner_request.get_summoner_info(summoner_name)
+        summoner_data['leagues'] = summoner_request.get_summoner_league(summoner_data['id'])
+        summoner_data['top_champions'] = summoner_request.get_summoner_top_champions(summoner_data['id'])
     except HTTPError as err:
         print(err.args[0].status_code)
         return abort(err.args[0].status_code)
@@ -24,7 +26,8 @@ def get_summoner(summoner_name):
 @app.route('/smartLoL/recentgames/<account_id>')
 def get_recent_games(account_id):
     try:
-        recent_games = match.get_summoner_recent_matches(account_id)
+        match_request = match.MatchRequest(request.args['platform'], request.args['language'])
+        recent_games = match_request.get_summoner_recent_matches(account_id)
     except HTTPError as err:
         return abort(err.args[0].status_code)
     else:
@@ -34,7 +37,8 @@ def get_recent_games(account_id):
 @app.route('/smartLoL/recentrankeds/<account_id>')
 def get_recent_rankeds(account_id):
     try:
-        recent_rankeds = match.get_summoner_recent_rankeds(account_id)
+        match_request = match.MatchRequest(request.args['platform'], request.args['language'])
+        recent_rankeds = match_request.get_summoner_recent_rankeds(account_id)
     except HTTPError as err:
         return abort(err.args[0].status_code)
     else:
@@ -44,7 +48,8 @@ def get_recent_rankeds(account_id):
 @app.route('/smartLoL/currentgame/<summoner_id>')
 def get_current_game(summoner_id):
     try:
-        current_game = match.get_current_game_info(summoner_id)
+        match_request = match.MatchRequest(request.args['platform'], request.args['language'])
+        current_game = match_request.get_current_game_info(summoner_id)
     except HTTPError as err:
         return abort(err.args[0].status_code)
     else:
@@ -67,6 +72,7 @@ def shutdown_session(exception=None):
     session.remove()
 
 
+#TODO surround with try except .one() calls
 def get_champion_version():
     version = session.query(Configuration).filter_by(code="champion version").one()
     return version.value
