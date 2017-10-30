@@ -4,7 +4,11 @@ from database.models import Champions
 from project import get_champion_version, get_runes_version, get_mastery_version, get_summoner_version
 
 class SummonerRequest:
-
+    """
+    Class to send request to riot games api for summoner data
+    :cvar platform: the objective region i.e. euw1
+    :cvar language: the id of the desired language i.e. 2 for spanish
+    """
     def __init__(self, platform, language):
         self.platform = platform
         self.language = language

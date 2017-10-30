@@ -21,7 +21,7 @@ def get_response(url):
     {
         "Origin": "https://developer.riotgames.com",
         "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-        "X-Riot-Token": "RGAPI-660b2c5b-3ff0-447c-b676-e8c61cc60b28",
+        "X-Riot-Token": "api-key",
         "Accept-Language": "es-ES,es;q=0.8,en;q=0.6",
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
     }

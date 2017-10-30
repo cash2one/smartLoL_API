@@ -3,6 +3,11 @@ from database.models import Champions, Masteries, Runes, SummonerSpells
 from database.setup import session
 
 class MatchRequest:
+    """
+    Class to send request to riot games api for matches data
+    :cvar platform: the objective region i.e. euw1
+    :cvar language: the id of the desired language i.e. 2 for spanish
+    """
 
     def __init__(self, platform, language):
         self.platform = platform
@@ -150,6 +155,7 @@ class MatchRequest:
         current_game['participants'] = participants
 
         return current_game
+
 
 if __name__ == '__main__':
     pass

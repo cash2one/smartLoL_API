@@ -58,12 +58,14 @@ def get_current_game(summoner_id):
 
 @app.route('/smartLoL/champions/')
 def get_champions_list():
-    return jsonify(champion.get_champions_list())
+    champion_request = champion.ChampionRequest(request.args['language'])
+    return jsonify(champion_request.get_champions_list())
 
 
 @app.route('/smartLoL/champion/<champion_id>')
 def get_champion_info(champion_id):
-    return jsonify(**champion.get_champion_info(champion_id, 2))
+    champion_request = champion.ChampionRequest(request.args['language'])
+    return jsonify(**champion_request.get_champion_info(champion_id))
 
 
 
