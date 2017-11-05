@@ -1,8 +1,7 @@
-from database.models import Champions, Configuration
+from database.models import Champions
 from database.setup import session
 from utils.riot_api_connection import CHAMPIONS_SQUARE_URL
 
-version = session.query(Configuration).filter_by(code="champion version").one().value
 
 class ChampionRequest:
     """
@@ -18,7 +17,7 @@ class ChampionRequest:
         for champion in session.query(Champions).all():
             data = {
                 "id": champion.id,
-                "image": CHAMPIONS_SQUARE_URL.format(version, champion.image_champion),
+                "image": CHAMPIONS_SQUARE_URL.format(champion.version, champion.image_champion),
                 "name": champion.name
             }
             champion_list.append(data)

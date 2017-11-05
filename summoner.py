@@ -1,7 +1,7 @@
 from utils.riot_api_connection import get_response, BASE_URL, PROFILE_ICONS_URL, CHAMPIONS_SPLASH_URL
 from database.setup import session
-from database.models import Champions
-from project import get_champion_version, get_runes_version, get_mastery_version, get_summoner_version
+from database.models import Champions, Configuration
+
 
 class SummonerRequest:
     """
@@ -34,7 +34,7 @@ class SummonerRequest:
             'accountId': summoner_info['accountId'],
             'name': summoner_info['name'],
             'lvl': summoner_info['summonerLevel'],
-            'icon': PROFILE_ICONS_URL.format(get_champion_version(), summoner_info['profileIconId'])
+            'icon': PROFILE_ICONS_URL.format(Configuration.get_version("champion version"), summoner_info['profileIconId'])
         }
 
         return data

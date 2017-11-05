@@ -1,8 +1,8 @@
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.dialects.mysql import SET, ENUM
-from database.setup import Base
-from utils.riot_api_connection import CHAMPIONS_SPLASH_URL
+from database.setup import Base, session
+import utils.riot_api_connection as riot_urls
 
 
 class Languages(Base):
@@ -19,9 +19,16 @@ class Configuration(Base):
     code = Column(String(50), nullable=False, unique=True)
     value = Column(String(50), nullable=False)
 
+    @staticmethod
+    def get_version(element):
+        version = session.query(Configuration).filter_by(code=element).one().value
+        return version
+
 
 class Champions(Base):
     __tablename__ = 'Champions'
+
+    version = Configuration.get_version("champion version")
 
     id = Column(Integer, primary_key=True, autoincrement=False)
     name = Column(String(50), nullable=False)
@@ -40,7 +47,9 @@ class Champions(Base):
 
     def toJson(self, id_locale):
         return {
+            "id": self.id,
             "name": self.name,
+            "image": self.image_champion,
             "rols": list(self.rols),
             "title": self.get_title(id_locale),
             "passive": self.get_passive(id_locale),
@@ -74,7 +83,7 @@ class Champions(Base):
         for spell in self.spells:
             item = spell.translations.filter_by(id_language=id_locale).one()
             data = {
-                "image": spell.image,
+                "image": riot_urls.ABILITIES_URL.format(self.version, spell.image),
                 "name": item.name,
                 "descripion": item.description
             }
@@ -90,7 +99,7 @@ class Champions(Base):
         skins = []
         for skin in self.skins:
             data = {
-                "image": CHAMPIONS_SPLASH_URL.format(self.champ_key, skin.num),
+                "image": riot_urls.CHAMPIONS_SPLASH_URL.format(self.champ_key, skin.num),
                 "name": skin.translations.filter_by(id_language=id_locale).one().name
             }
             skins.append(data)
@@ -102,7 +111,7 @@ class Champions(Base):
         return {
             "name": passive.name,
             "description": passive.description,
-            "image": self.image_passive
+            "image": riot_urls.PASSIVE_ABILITIES_URL.format(self.version, self.image_passive)
         }
 
     def get_title(self, id_locale):

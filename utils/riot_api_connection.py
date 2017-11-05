@@ -2,11 +2,10 @@ import requests
 import os.path
 
 
-
-CHAMPIONS_SQUARE_URL = 'http://ddragon.leagueoflegends.com/cdn/{}/img/champion/{}' #version_name
 CHAMPIONS_SPLASH_URL = 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{}_{}.jpg' #champkey_skinnum
-PROFILE_ICONS_URL = 'http://ddragon.leagueoflegends.com/cdn/{}/img/profileicon/{}.png' #version_id
 CHAMPIONS_LOADING_URL = 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/{}_{}.jpg' #champkey_skinnum
+CHAMPIONS_SQUARE_URL = 'http://ddragon.leagueoflegends.com/cdn/{}/img/champion/{}' #version_name
+PROFILE_ICONS_URL = 'http://ddragon.leagueoflegends.com/cdn/{}/img/profileicon/{}.png' #version_id
 PASSIVE_ABILITIES_URL = 'http://ddragon.leagueoflegends.com/cdn/{}/img/passive/{} ' #version_name
 ABILITIES_URL = 'http://ddragon.leagueoflegends.com/cdn/{}/img/spell/{}' #version_name
 MASTERIES_URL = 'http://ddragon.leagueoflegends.com/cdn/{}/img/mastery/{}' #version_id

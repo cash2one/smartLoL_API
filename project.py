@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, abort, request
 from database.setup import session
 from database.models import Configuration
-#from summoner import SummonerRequest
 import match, champion, summoner
 from requests import HTTPError
 
@@ -72,24 +71,6 @@ def get_champion_info(champion_id):
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     session.remove()
-
-
-#TODO surround with try except .one() calls
-def get_champion_version():
-    version = session.query(Configuration).filter_by(code="champion version").one()
-    return version.value
-
-def get_mastery_version():
-    version = session.query(Configuration).filter_by(code="mastery version").one()
-    return version.value
-
-def get_runes_version():
-    version = session.query(Configuration).filter_by(code="rune version").one()
-    return version.value
-
-def get_summoner_version():
-    version = session.query(Configuration).filter_by(code="summoner version").one()
-    return version.value
 
 
 if __name__ == '__main__':
