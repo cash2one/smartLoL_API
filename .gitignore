@@ -2,6 +2,7 @@
 database/*.config
 utils/*
 !utils/riot_api_connection.py
+!utils/load_*
 api-key
 *.txt
 .idea/
