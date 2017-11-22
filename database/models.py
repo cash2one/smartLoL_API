@@ -49,7 +49,7 @@ class Champions(Base):
         return {
             "id": self.id,
             "name": self.name,
-            "image": self.image_champion,
+            "image": riot_urls.CHAMPIONS_SQUARE_URL.format(self.version, self.image_champion),
             "rols": list(self.rols),
             "title": self.get_title(id_locale),
             "passive": self.get_passive(id_locale),
@@ -85,7 +85,7 @@ class Champions(Base):
             data = {
                 "image": riot_urls.ABILITIES_URL.format(self.version, spell.image),
                 "name": item.name,
-                "descripion": item.description
+                "description": item.description
             }
             spells.append(data)
 

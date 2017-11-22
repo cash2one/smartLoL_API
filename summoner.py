@@ -108,7 +108,7 @@ class SummonerRequest:
                 'lvl': champion['championLevel'],
                 'points': champion['championPoints'],
             }
-            total_info = {**data, "name": extra_info.name, "title": extra_info.get_title(self.language), "img_url": CHAMPIONS_SPLASH_URL.format(extra_info.champ_key, 0)}
+            total_info = {**data, "name": extra_info.name, "title": extra_info.get_title(self.language), "image": CHAMPIONS_SPLASH_URL.format(extra_info.champ_key, 0)}
             top_champions.append(total_info)
 
         return top_champions

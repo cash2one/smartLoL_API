@@ -9,7 +9,7 @@ class ChampionRequest:
     :cvar language: the id of the desired language i.e. 2 for spanish
     """
 
-    def __init__(self, language):
+    def __init__(self, language=1):
         self.language = language
 
     def get_champions_list(self):
@@ -22,7 +22,7 @@ class ChampionRequest:
             }
             champion_list.append(data)
 
-        return champion_list
+        return {"champions": champion_list}
 
     def get_champion_info(self, id_champion):
         return session.query(Champions).get(id_champion).toJson(self.language)
