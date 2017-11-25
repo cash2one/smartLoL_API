@@ -1,7 +1,8 @@
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.dialects.mysql import SET, ENUM
-from database.setup import Base, session
+from database.setup import session
+from database.base import Base
 import utils.riot_api_connection as riot_urls
 
 
@@ -21,14 +22,12 @@ class Configuration(Base):
 
     @staticmethod
     def get_version(element):
-        version = session.query(Configuration).filter_by(code=element).one().value
+        version = session.query(Configuration).filter_by(code=element).one_or_none().value
         return version
 
 
 class Champions(Base):
     __tablename__ = 'Champions'
-
-    version = Configuration.get_version("champion version")
 
     id = Column(Integer, primary_key=True, autoincrement=False)
     name = Column(String(50), nullable=False)
@@ -46,14 +45,15 @@ class Champions(Base):
     enemy_tips = relationship("ChampionEnemyTips", lazy="dynamic")
 
     def toJson(self, id_locale):
+        version = Configuration.get_version("champion version")
         return {
             "id": self.id,
             "name": self.name,
-            "image": riot_urls.CHAMPIONS_SQUARE_URL.format(self.version, self.image_champion),
+            "image": riot_urls.CHAMPIONS_SQUARE_URL.format(version, self.image_champion),
             "rols": list(self.rols),
             "title": self.get_title(id_locale),
-            "passive": self.get_passive(id_locale),
-            "spells": self.get_spells(id_locale),
+            "passive": self.get_passive(id_locale, version),
+            "spells": self.get_spells(id_locale, version),
             "skins": self.get_skins(id_locale),
             "info": self.get_info(),
             "ally_tips": self.get_ally_tips(id_locale),
@@ -74,7 +74,7 @@ class Champions(Base):
         """
         return [item.tip for item in self.enemy_tips.filter_by(id_language=id_locale)]
 
-    def get_spells(self, id_locale):
+    def get_spells(self, id_locale, version):
         """
         :param id_locale: id of the desired language
         :return: return a list of spells as dictionaries
@@ -83,7 +83,7 @@ class Champions(Base):
         for spell in self.spells:
             item = spell.translations.filter_by(id_language=id_locale).one()
             data = {
-                "image": riot_urls.ABILITIES_URL.format(self.version, spell.image),
+                "image": riot_urls.ABILITIES_URL.format(version, spell.image),
                 "name": item.name,
                 "description": item.description
             }
@@ -106,12 +106,12 @@ class Champions(Base):
 
         return skins
 
-    def get_passive(self, id_locale):
+    def get_passive(self, id_locale, version):
         passive = self.passive.filter_by(id_language=id_locale).one()
         return {
             "name": passive.name,
             "description": passive.description,
-            "image": riot_urls.PASSIVE_ABILITIES_URL.format(self.version, self.image_passive)
+            "image": riot_urls.PASSIVE_ABILITIES_URL.format(version, self.image_passive)
         }
 
     def get_title(self, id_locale):

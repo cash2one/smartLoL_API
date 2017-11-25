@@ -30,7 +30,7 @@ def main():
     """
     first_time = True
     for id_locale, locale in LOCALES.items():
-        with open("champs{}.json".format(locale)) as inputfile:
+        with open("{}.json".format(locale)) as inputfile:
             response = json.load(inputfile)
 
         try:
@@ -40,14 +40,13 @@ def main():
                 "code": "{} version".format(response['type']),
                 "value": response['version']
             }
-            if not version:
-                print("añadiendo versión campeones")
-                championversion = Configuration(**configdata)
-                session.add(championversion)
-        if championversion.value != response['version']:
+            print("añadiendo versión campeones")
+            version = Configuration(**configdata)
+            session.add(version)
+        if version.value != response['version']:
             print("actualizando versión campeones")
-            championversion.value = response['version']
-            session.add(championversion)
+            version.value = response['version']
+            session.add(version)
 
         champions_data = response['data']
 
@@ -55,7 +54,7 @@ def main():
             #champion, champion spells, champions skins and champions info are locale independant
             if first_time:
                 get_champion(champion)
-                get_Champion_spells(champion, id_locale)
+                get_champion_spells(champion, id_locale)
                 get_champion_skins(champion, id_locale)
                 get_champion_info(champion)
 
@@ -82,6 +81,8 @@ def get_champion(champion):
     }
     newChampion = Champions(**championdata)
     session.add(newChampion)
+    session.commit()
+
 
 def get_champion_title(champion, language):
     titledata = {
@@ -91,6 +92,7 @@ def get_champion_title(champion, language):
     }
     newChampionTitle = ChampionsTitles(**titledata)
     session.add(newChampionTitle)
+
 
 def get_passive_translations(champion, language):
     translationdata = {
@@ -102,7 +104,8 @@ def get_passive_translations(champion, language):
     newPassiveTranslation = PassivesTranslations(**translationdata)
     session.add(newPassiveTranslation)
 
-def get_Champion_spells(champion, language):
+
+def get_champion_spells(champion, language):
     id_champion = champion['id']
     for spell in champion['spells']:
         spelldata = {
@@ -112,9 +115,10 @@ def get_Champion_spells(champion, language):
         }
         newChampionSpell = ChampionsSpells(**spelldata)
         session.add(newChampionSpell)
+        session.commit()
+
 
 def get_spell_translations(champion, language):
-
     for spell in champion['spells']:
         spell_id = session.query(ChampionsSpells).filter_by(spell_key=spell['key']).one().id
         translationdata = {
@@ -126,6 +130,7 @@ def get_spell_translations(champion, language):
         newSpellTranslation = SpellsTranslations(**translationdata)
         session.add(newSpellTranslation)
 
+
 def get_champion_skins(champion, language):
     id_champion = champion['id']
     for skin in champion['skins']:
@@ -136,6 +141,8 @@ def get_champion_skins(champion, language):
         }
         newChampionSkin = ChampionsSkins(**skindata)
         session.add(newChampionSkin)
+        session.commit()
+
 
 def get_skin_translation(champion, language):
     for skin in champion['skins']:
@@ -147,6 +154,7 @@ def get_skin_translation(champion, language):
         newSkinTranslation = SkinsTranslations(**translationdata)
         session.add(newSkinTranslation)
 
+
 def get_champion_info(champion):
     infodata = {
         "id_champion": champion['id'],
@@ -157,6 +165,8 @@ def get_champion_info(champion):
     }
     newChampionInfo = ChampionsInfo(**infodata)
     session.add(newChampionInfo)
+    session.commit()
+
 
 def get_champion_allytips(champion, language):
     id_champion = champion['id']
@@ -168,6 +178,7 @@ def get_champion_allytips(champion, language):
         }
         newChampionAllyTip = ChampionAllyTips(**tipdata)
         session.add(newChampionAllyTip)
+
 
 def get_champion_enemytips(champion, language):
     id_champion = champion['id']
@@ -182,5 +193,5 @@ def get_champion_enemytips(champion, language):
 
 
 if __name__ == '__main__':
-    write_files()
+    #write_files()
     main()
